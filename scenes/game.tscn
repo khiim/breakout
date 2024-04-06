@@ -1,0 +1,142 @@
+[gd_scene load_steps=8 format=3 uid="uid://y6y8o7ox0jei"]
+
+[ext_resource type="Texture2D" uid="uid://c64pojoeuyaec" path="res://assets/wall.png" id="1_7p2df"]
+[ext_resource type="Script" path="res://scenes/game.gd" id="1_l5fjo"]
+[ext_resource type="Texture2D" uid="uid://bnvfadtmrhstr" path="res://assets/wallcornerleft.png" id="2_a7ihq"]
+[ext_resource type="Texture2D" uid="uid://crmt0nffqdjpd" path="res://assets/wallcornerright.png" id="3_ko40m"]
+[ext_resource type="PackedScene" uid="uid://bxyy2k861gy3b" path="res://scenes/ball.tscn" id="4_rmto8"]
+[ext_resource type="PackedScene" uid="uid://d0ft3kylph6dl" path="res://scenes/paddle.tscn" id="5_c5ktb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gq4kn"]
+size = Vector2(32, 32)
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_l5fjo")
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="WallLeft" type="Sprite2D" parent="Walls"]
+position = Vector2(0, 64)
+scale = Vector2(1, 26)
+texture = ExtResource("1_7p2df")
+offset = Vector2(16, 16)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/WallLeft"]
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WallLeft/StaticBody2D"]
+position = Vector2(16, 16)
+shape = SubResource("RectangleShape2D_gq4kn")
+
+[node name="WallTop" type="Sprite2D" parent="Walls"]
+position = Vector2(1408.06, 32)
+rotation = 1.5708
+scale = Vector2(1, 43.0019)
+texture = ExtResource("1_7p2df")
+offset = Vector2(16, 16)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/WallTop"]
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WallTop/StaticBody2D"]
+position = Vector2(16, 16)
+shape = SubResource("RectangleShape2D_gq4kn")
+
+[node name="WallRight" type="Sprite2D" parent="Walls"]
+position = Vector2(1408, 64)
+scale = Vector2(1, 26)
+texture = ExtResource("1_7p2df")
+offset = Vector2(16, 16)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/WallRight"]
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WallRight/StaticBody2D"]
+position = Vector2(16, 16)
+shape = SubResource("RectangleShape2D_gq4kn")
+
+[node name="Wallcornerleft" type="Sprite2D" parent="Walls"]
+position = Vector2(16, 48)
+texture = ExtResource("2_a7ihq")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/Wallcornerleft"]
+position = Vector2(-16, -16)
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Wallcornerleft/StaticBody2D"]
+position = Vector2(16, 16)
+shape = SubResource("RectangleShape2D_gq4kn")
+
+[node name="Wallcornerright" type="Sprite2D" parent="Walls"]
+position = Vector2(1424, 48)
+texture = ExtResource("3_ko40m")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls/Wallcornerright"]
+position = Vector2(-16, -16)
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Wallcornerright/StaticBody2D"]
+position = Vector2(16, 16)
+shape = SubResource("RectangleShape2D_gq4kn")
+
+[node name="Bricks" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Ball" parent="." instance=ExtResource("4_rmto8")]
+unique_name_in_owner = true
+position = Vector2(768, 832)
+start_position = Vector2(768, 832)
+
+[node name="Paddle" parent="." instance=ExtResource("5_c5ktb")]
+position = Vector2(768, 864)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PointsTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_left = 24.0
+offset_right = 320.0
+offset_bottom = 32.0
+
+[node name="LivesTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_left = 1336.0
+offset_right = 1408.0
+offset_bottom = 32.0
+text = "Lives: 3"
+
+[node name="GameOverTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[shake][font_size=70][color=red]GAME OVER[/color][/font_size][/shake]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="HighScoreTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+unique_name_in_owner = true
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 32.0
+grow_horizontal = 2
+text = "High score"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[connection signal="exited_screen" from="Ball" to="." method="_on_ball_exited_screen"]
